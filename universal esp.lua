@@ -1,4 +1,4 @@
-local DiscordLib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/discord%20lib.txt")()
+local DiscordLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/discord%20lib.txt"))()
 local needToCreateButtonToTp = true
 local needToCreateDropdownToTp = true
 local espColor = Color3.fromRGB(255, 1, 1)
@@ -11,6 +11,7 @@ local main = serv:Channel("Main")
 
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
+
 local function populateDropdown()
     local playerNames = {}
 
@@ -48,11 +49,11 @@ end
 
 populateDropdown()
 
-Players.PlayerAdded:Connect(function()
+Players.PlayerAdded:Connect(function(player)
     populateDropdown()
 end)
 
-Players.PlayerRemoving:Connect(function()
+Players.PlayerRemoving:Connect(function(player)
     populateDropdown()
 end)
 
@@ -68,7 +69,7 @@ function createEsp(player)
             billboard.AlwaysOnTop = true
             billboard.Size = UDim2.new(4, 0, 5, 0) -- Adjust size as needed
             billboard.Adornee = player.Character:FindFirstChild("HumanoidRootPart")
-			billboard.Enabled = false
+            billboard.Enabled = false
 
             local frame = Instance.new("Frame", billboard)
             frame.Size = UDim2.new(1, 0, 1, 0)
@@ -88,6 +89,12 @@ Players.PlayerAdded:Connect(function(player)
     end)
 end)
 
+Players.PlayerRemoving:Connect(function(player)
+    if player.Character and player.Character:FindFirstChild("EspBillboard") then
+        player.Character.EspBillboard:Destroy()
+    end
+end)
+
 main:Toggle("Esp Player", false, function(value)
     for _, player in pairs(Players:GetPlayers()) do
         if player.Character and player.Character:FindFirstChild("EspBillboard") then
@@ -97,10 +104,12 @@ main:Toggle("Esp Player", false, function(value)
 end)
 
 main:Button("Reload Esp", function()
-	createEsp()
+    for _, player in pairs(Players:GetPlayers()) do
+        createEsp(player)
+    end
 end)
 
-main:Colorpicker("", espColor, function(color)
+main:Colorpicker("ESP Color", espColor, function(color)
     espColor = color
     for _, player in pairs(Players:GetPlayers()) do
         if player.Character and player.Character:FindFirstChild("EspBillboard") then
