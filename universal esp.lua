@@ -110,6 +110,8 @@ end)
 main:Button("Reload Esp", function()
     for _, player in pairs(Players:GetPlayers()) do
         createEsp(player)
+        player.Character.EspBillboard.Enabled = true
+        player.Character.EspBillboard.Enabled = false
     end
 end)
 
