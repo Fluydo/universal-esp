@@ -96,6 +96,10 @@ main:Toggle("Esp Player", false, function(value)
     end
 end)
 
+main:Button("Reload Esp", function()
+	createEsp()
+end)
+
 main:Colorpicker("", espColor, function(color)
     espColor = color
     for _, player in pairs(Players:GetPlayers()) do
