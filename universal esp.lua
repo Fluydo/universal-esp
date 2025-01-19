@@ -86,12 +86,16 @@ end
 Players.PlayerAdded:Connect(function(player)
     player.CharacterAdded:Connect(function()
         createEsp(player)
+        player.Character.EspBillboard.Enabled = true
+        player.Character.EspBillboard.Enabled = false
     end)
 end)
 
 Players.PlayerRemoving:Connect(function(player)
     if player.Character and player.Character:FindFirstChild("EspBillboard") then
         player.Character.EspBillboard:Destroy()
+        player.Character.EspBillboard.Enabled = true
+        player.Character.EspBillboard.Enabled = false
     end
 end)
 
